@@ -1,0 +1,114 @@
+
+import csv
+def csv_write(filename,rows):
+    with open(filename, 'wb') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',quotechar='"', quoting=csv.QUOTE_ALL)
+        for row in rows:
+            writer.writerow(row)
+
+def csv_read(filename):
+    rows=[]
+    with open(filename,'r') as f:
+        reader=csv.reader(f,delimiter=',',quotechar='"')
+        for row in reader:
+            rows.append(row)
+    return rows
+
+final_rows=csv_read('1.csv')
+user_ids=[]
+for row in final_rows:
+    user_ids.append(row[4].lower())
+print len(user_ids),len(set(user_ids))
+final_final_rows=[]
+for row in final_rows:
+    row=[row[i].capitalize() if i!=6  else row[i] for i in range(0,len(row))]
+    row[4]=row[4].lower()
+    final_final_rows.append(row)
+    print row
+    if row[6]!="":
+        print row
+        
+csv_write('new_new_new_deliverable_clemson_students_records.csv',final_final_rows)
+print len(final_final_rows)
+print len(final_rows)    
+    
+
+"""
+from bisect import bisect_left
+
+def binary_search(a, x, lo=0, hi=None):   # can't use a to specify default for hi
+    hi = hi if hi is not None else len(a) # hi defaults to len(a)   
+    pos = bisect_left(a,x,lo,hi)          # find insertion position
+    return (pos if pos != hi and a[pos] == x else -1) # don't walk off the end
+import json
+file_records=csv_read("op.csv")
+
+unique_records=[]
+user_ids=[]
+records_lens=[]
+final_records=[]
+print len(file_records)
+new_file_records=csv_read("op1.csv")
+file_records+=new_file_records[1:]
+print len(file_records)
+x=0
+
+
+for i in range(1,len(file_records)):
+    
+    if int(file_records[i][1])>0:
+        for record in json.loads(file_records[i][2]):
+            if len(record)!=0:
+                user_ids.append(record['cn'])
+                
+user_ids=list(set(user_ids))
+user_ids.sort()
+
+
+
+
+                
+for i in range(1,len(file_records)):
+    if int(file_records[i][1])>0:
+            print "processing", x, len(user_ids)
+            x+=1     
+            url_records=json.loads(file_records[i][2])
+            for record in url_records:
+                records_lens.append(len(record))
+                
+                if len(record)!=0:
+                    #print record
+                    first_name=record['name'].get('first',None)    
+                    middle_name=record['name'].get('middle',None)
+                    last_name=record['name'].get('last',None)
+                    suffix=record['name'].get('suffix',None)
+                    email=record.get('cn',None)
+                    affiliation=record.get('primaryAffiliation',None)
+                    photo=record.get('photo_url',None)
+                    department=record.get('department',None)
+                    major=record.get('major',None)
+                    title=record.get('title',None)
+                    
+                    if email:
+                        email=email.lower()+"@clemson.edu"
+                        
+                    #print first_name,middle_name,last_name,suffix,email,affiliation,photo,department,major,title
+                    index=binary_search(user_ids,record['cn'])
+                    if index==-1:
+                        continue
+                    if record['cn'] in user_ids:
+                        del user_ids[index]
+                        if affiliation=='student':
+                            final_records.append([first_name,middle_name,last_name,suffix,email,affiliation,photo,department,major,title])
+                        
+                
+        
+print len(user_ids)
+print len(set(user_ids))            
+print len(records_lens)
+print max(records_lens)
+
+
+print len(final_records)
+csv_write('2.csv',final_records)
+"""
