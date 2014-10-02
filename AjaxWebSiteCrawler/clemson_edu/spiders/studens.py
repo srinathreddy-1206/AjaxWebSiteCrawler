@@ -39,21 +39,23 @@ class PypiSpider(CrawlSpider):
         data=dept_codes[0]['data']
         codes=[i['id'] for i in data ]
         print codes
-        combinations=[i+'*' for i in list(string.ascii_lowercase)]
+        
         urls=[]
         for i in list(string.ascii_lowercase)+['',]:
             for j in list(string.ascii_lowercase)+['',]:
                 for k in list(string.ascii_lowercase)+['',]:
                     combination=(i+j+k).strip()+"*"
-                    if len(combination)!=4: print combination
+                    
                     url="https://my.clemson.edu/srv/feed/dynamic/directory/search?name="+combination
                     urls.append(url)
+        #Debugging information
         print len(urls)
         urls=list(set(urls))
         print urls[0],urls[1],urls[2000]
         print len(urls) 
+        #######################################
         for counter,url in enumerate(urls):
-            #yield Request(url=url,callback=self.parse_student_info,headers=headers,meta={'dont_merge_cookies':True,'counter':counter},dont_filter=True)
+            yield Request(url=url,callback=self.parse_student_info,headers=headers,meta={'dont_merge_cookies':True,'counter':counter},dont_filter=True)
             pass
     def parse_student_info(self,response):
          self.url_counter+=1
